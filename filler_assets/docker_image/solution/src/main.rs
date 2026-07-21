@@ -24,19 +24,26 @@ fn main() {
                     _ => return,
                 }
             }
-            let Some(board) = parse_board(&board_lines, board_w, board_h) else {
-                println!("0 0");
-                let _ = io::stdout().flush();
-                continue;
+            let board = match parse_board(&board_lines, board_w, board_h) {
+                Some(b) => b,
+                None => {
+                    println!("0 0");
+                    let _ = io::stdout().flush();
+                    continue;
+                }
             };
 
-            let Some(Ok(piece_header)) = lines.next() else {
-                return;
+            let piece_header = match lines.next() {
+                Some(Ok(h)) => h,
+                _ => return,
             };
-            let Some((piece_w, piece_h)) = parse_piece_header(&piece_header) else {
-                println!("0 0");
-                let _ = io::stdout().flush();
-                continue;
+            let (piece_w, piece_h) = match parse_piece_header(&piece_header) {
+                Some(v) => v,
+                None => {
+                    println!("0 0");
+                    let _ = io::stdout().flush();
+                    continue;
+                }
             };
 
             let mut piece_lines = Vec::with_capacity(piece_h);
@@ -46,10 +53,13 @@ fn main() {
                     _ => return,
                 }
             }
-            let Some(piece) = parse_piece(&piece_lines, piece_w, piece_h) else {
-                println!("0 0");
-                let _ = io::stdout().flush();
-                continue;
+            let piece = match parse_piece(&piece_lines, piece_w, piece_h) {
+                Some(p) => p,
+                None => {
+                    println!("0 0");
+                    let _ = io::stdout().flush();
+                    continue;
+                }
             };
 
             let (x, y) = find_move(&board, &piece, player);
