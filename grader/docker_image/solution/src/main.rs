@@ -1,6 +1,6 @@
 use std::io;
-use solution::parsing::{parse_dimensions, parse_grid_rows, parse_piece_rows, parse_player_characters};
-use solution::place_piece::place_piece;
+use crate::place_piece::place_piece;
+mod place_piece;
 
 fn main() {
     let (play, enemy) = get_player_characters();
@@ -18,27 +18,37 @@ fn get_player_characters() -> (Vec<char>, Vec<char>) {
     io::stdin()
         .read_line(&mut input)
         .expect("Failed to read input");
-    parse_player_characters(&input).expect("Invalid player header")
+    let player_number = input.chars().nth(10).unwrap();
+    if player_number == '1' {
+        (vec!['@', 'a'], vec!['$', 's'])
+    } else {
+        (vec!['$', 's'], vec!['@', 'a'])
+    }
 }
 fn read_grid() -> Vec<Vec<char>> {
     let mut input = String::new();
     io::stdin()
         .read_line(&mut input)
         .expect("Failed to read input");
-    let (grid_columns, grid_lines) = parse_dimensions(&input).expect("Invalid grid header");
+    let grid_details = input.split_whitespace().collect::<Vec<&str>>()[2];
+    let grid_lines = grid_details[..grid_details.len() - 1]
+        .parse::<i32>()
+        .unwrap();
 
-    input.clear();
-    io::stdin().read_line(&mut input).expect("Failed to read input");
-
-    let mut rows = Vec::new();
-    for _ in 0..grid_lines {
+    let mut grid = Vec::new();
+    for i in 0..grid_lines + 1 {
         input.clear();
         io::stdin()
             .read_line(&mut input)
             .expect("Failed to read input");
-        rows.push(input.clone());
+        if i < 1 {
+            continue;
+        } else {
+            let row: Vec<char> = input[4..input.len() - 1].chars().collect();
+            grid.push(row);
+        }
     }
-    parse_grid_rows(&rows, grid_columns, grid_lines).expect("Invalid grid rows")
+    grid
 }
 
 // Read the piece from the standard input and return it as a 2D vector.
@@ -47,16 +57,20 @@ fn read_piece() -> Vec<Vec<char>> {
     io::stdin()
         .read_line(&mut input)
         .expect("Failed to read input");
-    let (piece_columns, piece_lines) = parse_dimensions(&input).expect("Invalid piece header");
+    let piece_details = input.split_whitespace().collect::<Vec<&str>>();
+    let piece_lines = piece_details[2][..piece_details[2].len() - 1]
+        .parse::<i32>()
+        .unwrap();
 
-    let mut rows = Vec::new();
+    let mut piece = Vec::new();
     for _ in 0..piece_lines {
         input.clear();
         io::stdin()
             .read_line(&mut input)
             .expect("Failed to read input");
-        rows.push(input.clone());
+        let row: Vec<char> = input[..input.len() - 1].chars().collect();
+        piece.push(row);
     }
-    parse_piece_rows(&rows, piece_columns, piece_lines).expect("Invalid piece rows")
+    piece
 }
 

@@ -1,3 +1,2 @@
-pub mod logic;
-pub mod model;
-pub mod parser;
+pub mod parsing;
+pub mod place_piece;
