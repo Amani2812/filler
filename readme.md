@@ -98,17 +98,6 @@ docker build -t filler .
 docker run -p 3000:3000 filler
 ```
 
-## 👥 Contributors
-
-Thanks to everyone who has contributed to this project:
-
-<p align="left">
-<a href="https://github.com/Amani2812" title="Amani2812"><img src="https://avatars.githubusercontent.com/u/153682375?v=4&s=64" width="64" height="64" alt="Amani2812" style="border-radius:50%" /></a>
-<a href="https://github.com/IbsYoussef" title="IbsYoussef"><img src="https://avatars.githubusercontent.com/u/124460805?v=4&s=64" width="64" height="64" alt="IbsYoussef" style="border-radius:50%" /></a>
-</p>
-
-[See the full list of contributors →](https://github.com/Amani2812/Filler/graphs/contributors)
-
 ## 👥 Contributing
 
 Contributions are welcome! Here's the standard flow:
